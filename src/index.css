@@ -1,12 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg-base: #F8F5F2;
+  --color-bg-base: #F4F6F4;
   --color-bg-card: #FFFFFF;
-  --color-text-main: #111418;
-  --color-text-muted: #64748B;
-  --color-border-subtle: #F1EAE5;
-  --color-border-card: #EAE3DC;
+  --color-text-main: #141B18;
+  --color-text-muted: #5D6862;
+  --color-border-subtle: #E8ECE8;
+  --color-border-card: #DDE3DD;
+
+  --color-sage-accent: #2E5A44;
+  --color-sage-soft: #EAF0EC;
   
   --font-display: 'Plus Jakarta Sans', sans-serif;
   --font-body: 'Plus Jakarta Sans', sans-serif;
@@ -15,13 +18,14 @@
 
 body {
   font-family: var(--font-body);
-  background-color: #F8F5F2;
+  /* Organic greyish-white nature vibe: soft misty stone with organic olive/sage and pebble hues */
+  background-color: #F3F5F3;
   background-image: 
-    radial-gradient(at 0% 0%, rgba(254, 215, 226, 0.5) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(224, 231, 255, 0.45) 0px, transparent 50%),
-    radial-gradient(at 50% 100%, rgba(254, 243, 199, 0.4) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, rgba(228, 235, 229, 0.75) 0px, transparent 55%),
+    radial-gradient(at 100% 0%, rgba(235, 238, 233, 0.65) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(225, 232, 227, 0.7) 0px, transparent 55%);
   background-attachment: fixed;
-  color: #111418;
+  color: #171E1A;
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
@@ -36,9 +40,9 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
+  background: #C4CDC6;
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94A3B8;
+  background: #A6B2A8;
 }
