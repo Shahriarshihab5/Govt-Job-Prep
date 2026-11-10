@@ -9,7 +9,11 @@ import {
   XCircle, 
   HelpCircle, 
   Flag,
-  RotateCcw
+  RotateCcw,
+  Sparkles,
+  ArrowRight,
+  ShieldCheck,
+  Award
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { Question, ExamSession, QuestionAttempt } from '../types';
@@ -101,7 +105,10 @@ export const ExamEngineView: React.FC<ExamEngineViewProps> = ({
   const handleSubmitExam = () => {
     if (isSubmitted) return;
 
-    const confirmSubmit = window.confirm('Ready to submit your examination answers?');
+    const answeredCount = Object.keys(selectedAnswers).length;
+    const confirmSubmit = window.confirm(
+      `You answered ${answeredCount} of ${questions.length} questions. Finalize and submit?`
+    );
     if (!confirmSubmit && secondsRemaining > 0) return;
 
     let correctCount = 0;
@@ -192,8 +199,8 @@ export const ExamEngineView: React.FC<ExamEngineViewProps> = ({
 
     if (accuracy >= 60) {
       confetti({
-        particleCount: 80,
-        spread: 70,
+        particleCount: 90,
+        spread: 80,
         origin: { y: 0.6 }
       });
     }
@@ -205,54 +212,73 @@ export const ExamEngineView: React.FC<ExamEngineViewProps> = ({
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const progressPct = Math.round(((currentIndex + 1) / questions.length) * 100);
+
   if (isSubmitted && submittedSession) {
     return (
       <div className="max-w-4xl mx-auto space-y-6">
-        {/* Results Header Card */}
-        <div className="bg-white border border-[#EAE3DC] rounded-3xl p-6 sm:p-8 shadow-[0_4px_24px_rgba(0,0,0,0.03)] text-center space-y-4">
-          <span className="text-xs font-bold uppercase px-3 py-1 rounded-full bg-[#10B981]/15 text-[#10B981]">
-            Official Evaluation Complete
-          </span>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-[#111418]">
-            Exam Score: {submittedSession.score} / {questions.length}
+        {/* Results Card with Emerald Theme */}
+        <div className="premium-card rounded-3xl p-6 sm:p-10 text-center space-y-5 border-emerald-500/20 shadow-xl">
+          <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-[#ECFDF5] border border-[#A7F3D0] text-xs font-black text-[#065F46] uppercase">
+            <Award size={15} className="text-[#059669]" />
+            <span>Official Examination Evaluation</span>
+          </div>
+
+          <h1 className="text-3xl sm:text-5xl font-black text-[#0F172A] tracking-tight">
+            Net Score: <span className="text-[#059669]">{submittedSession.score}</span> <span className="text-xl sm:text-2xl text-[#64748B]">/ {questions.length}</span>
           </h1>
-          <p className="text-xs text-[#64748B]">
-            Accuracy: {submittedSession.accuracy}% • Time: {formatTime(submittedSession.durationSeconds)} • Negative marking: -{settings.negativeMarkValue} per error
+
+          <p className="text-xs sm:text-sm text-[#64748B] max-w-lg mx-auto">
+            {submittedSession.accuracy >= 70 
+              ? '🎉 Outstanding work! Your score meets the BCS Preliminary qualification target.'
+              : 'Keep practicing! Incorrect questions have been scheduled into your Spaced Revision Queue.'}
           </p>
 
-          {/* KPI grid */}
+          {/* 4 Score Badges */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-            <div className="bg-[#F8F5F2] p-4 rounded-2xl text-center">
-              <div className="text-xs text-[#64748B]">Correct</div>
-              <div className="text-2xl font-black text-[#10B981]">{submittedSession.rawCorrect}</div>
+            <div className="bg-[#F8FAF9] p-4 rounded-2xl border border-[#E2E8F0]">
+              <div className="text-xs text-[#64748B] font-bold uppercase">Correct</div>
+              <div className="text-2xl sm:text-3xl font-black text-[#059669] mt-1">{submittedSession.rawCorrect}</div>
+              <div className="text-[11px] text-[#64748B]">+1 per question</div>
             </div>
-            <div className="bg-[#F8F5F2] p-4 rounded-2xl text-center">
-              <div className="text-xs text-[#64748B]">Incorrect</div>
-              <div className="text-2xl font-black text-[#EF4444]">{submittedSession.rawIncorrect}</div>
+
+            <div className="bg-[#F8FAF9] p-4 rounded-2xl border border-[#E2E8F0]">
+              <div className="text-xs text-[#64748B] font-bold uppercase">Incorrect</div>
+              <div className="text-2xl sm:text-3xl font-black text-[#EF4444] mt-1">{submittedSession.rawIncorrect}</div>
+              <div className="text-[11px] text-[#64748B]">-{settings.negativeMarkValue} per error</div>
             </div>
-            <div className="bg-[#F8F5F2] p-4 rounded-2xl text-center">
-              <div className="text-xs text-[#64748B]">Skipped</div>
-              <div className="text-2xl font-black text-[#64748B]">{submittedSession.rawUnanswered}</div>
+
+            <div className="bg-[#F8FAF9] p-4 rounded-2xl border border-[#E2E8F0]">
+              <div className="text-xs text-[#64748B] font-bold uppercase">Accuracy</div>
+              <div className="text-2xl sm:text-3xl font-black text-[#0284C7] mt-1">{submittedSession.accuracy}%</div>
+              <div className="text-[11px] text-[#64748B]">Target &gt; 70%</div>
             </div>
-            <div className="bg-[#F8F5F2] p-4 rounded-2xl text-center">
-              <div className="text-xs text-[#64748B]">Accuracy</div>
-              <div className="text-2xl font-black text-[#4A4DE6]">{submittedSession.accuracy}%</div>
+
+            <div className="bg-[#F8FAF9] p-4 rounded-2xl border border-[#E2E8F0]">
+              <div className="text-xs text-[#64748B] font-bold uppercase">Time Spent</div>
+              <div className="text-2xl sm:text-3xl font-black text-[#0F172A] mt-1">{formatTime(submittedSession.durationSeconds)}</div>
+              <div className="text-[11px] text-[#64748B]">Avg {Math.round(submittedSession.durationSeconds / questions.length)}s / MCQ</div>
             </div>
           </div>
 
-          <button
-            onClick={onFinish}
-            className="px-6 py-2.5 rounded-full bg-[#111418] text-white text-xs font-bold hover:bg-[#20232A] cursor-pointer"
-          >
-            Return to Dashboard
-          </button>
+          <div className="pt-4 flex justify-center">
+            <button
+              onClick={onFinish}
+              className="emerald-btn text-white text-sm font-black px-8 py-3.5 rounded-full cursor-pointer shadow-lg hover:scale-105 transition-transform"
+            >
+              Return to Command Center
+            </button>
+          </div>
         </div>
 
-        {/* Detailed Solutions */}
+        {/* Detailed Solutions Section */}
         <div className="space-y-4">
-          <h2 className="text-lg font-bold text-[#111418]">
-            Answer Review & Solutions ({questions.length})
-          </h2>
+          <div className="flex items-center justify-between px-1">
+            <h2 className="text-lg sm:text-xl font-black text-[#0F172A]">
+              Detailed Solutions & Rationales ({questions.length})
+            </h2>
+            <span className="text-xs text-[#64748B] font-bold">Review explanations carefully</span>
+          </div>
 
           {questions.map((q, idx) => {
             const userChoice = selectedAnswers[idx];
@@ -262,56 +288,61 @@ export const ExamEngineView: React.FC<ExamEngineViewProps> = ({
             return (
               <div 
                 key={q.id}
-                className={`bg-white border rounded-2xl p-5 space-y-3 shadow-xs ${
+                className={`premium-card rounded-3xl p-5 sm:p-6 space-y-3 ${
                   isCorr 
-                    ? 'border-[#10B981]/50' 
+                    ? 'border-emerald-500/40 bg-emerald-50/20' 
                     : isUnans 
-                      ? 'border-[#EAE3DC]' 
-                      : 'border-[#EF4444]/50'
+                      ? 'border-[#E2E8F0]' 
+                      : 'border-red-500/40 bg-red-50/20'
                 }`}
               >
                 <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
                   <div className="flex items-center space-x-2">
-                    <span className="font-bold text-[#111418]">#{idx + 1}</span>
-                    <span className="px-2.5 py-0.5 rounded-full bg-[#F8F5F2] font-semibold text-[#64748B]">
+                    <span className="font-black text-[#0F172A]">Question {idx + 1}</span>
+                    <span className="px-2.5 py-0.5 rounded-full bg-[#ECFDF5] text-[#065F46] font-bold">
                       {q.subject}
                     </span>
-                    <span className="text-[#64748B]">{q.topic}</span>
+                    <span className="text-[#64748B]">• {q.topic}</span>
                   </div>
 
-                  <span className={`font-bold ${isCorr ? 'text-[#10B981]' : isUnans ? 'text-[#64748B]' : 'text-[#EF4444]'}`}>
-                    {isCorr ? '✓ Correct (+1)' : isUnans ? 'Skipped (0)' : `✕ Wrong (-${settings.negativeMarkValue})`}
+                  <span className={`font-black ${isCorr ? 'text-[#059669]' : isUnans ? 'text-[#64748B]' : 'text-[#EF4444]'}`}>
+                    {isCorr ? '✓ Correct (+1.0)' : isUnans ? '○ Skipped (0.0)' : `✕ Wrong (-${settings.negativeMarkValue})`}
                   </span>
                 </div>
 
-                <h3 className="text-base font-semibold text-[#111418]">
+                <h3 className="text-base sm:text-lg font-bold text-[#0F172A] leading-relaxed">
                   {q.questionText}
                 </h3>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
                   {q.options.map((opt, optIdx) => {
                     const isSelected = userChoice === optIdx;
                     const isRight = optIdx === q.correctOptionIndex;
 
-                    let optStyle = 'bg-[#F8F5F2] border-[#EAE3DC] text-[#64748B]';
+                    let optStyle = 'bg-white border-[#E2E8F0] text-[#64748B]';
                     if (isRight) {
-                      optStyle = 'bg-[#10B981]/15 border-[#10B981] text-[#10B981] font-bold';
+                      optStyle = 'bg-[#ECFDF5] border-[#10B981] text-[#065F46] font-bold shadow-xs';
                     } else if (isSelected && !isRight) {
-                      optStyle = 'bg-[#EF4444]/15 border-[#EF4444] text-[#EF4444] line-through';
+                      optStyle = 'bg-red-50 border-[#EF4444] text-[#B91C1C] line-through';
                     }
 
                     return (
-                      <div key={optIdx} className={`p-3 rounded-xl border text-xs flex items-center justify-between ${optStyle}`}>
-                        <span>{String.fromCharCode(65 + optIdx)}. {opt}</span>
-                        {isRight && <CheckCircle2 size={15} />}
-                        {isSelected && !isRight && <XCircle size={15} />}
+                      <div key={optIdx} className={`p-3 rounded-2xl border text-xs sm:text-sm flex items-center justify-between ${optStyle}`}>
+                        <div className="flex items-center space-x-2.5">
+                          <span className="w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs bg-[#F1F5F9]">
+                            {String.fromCharCode(65 + optIdx)}
+                          </span>
+                          <span>{opt}</span>
+                        </div>
+                        {isRight && <CheckCircle2 size={16} className="text-[#059669] shrink-0" />}
+                        {isSelected && !isRight && <XCircle size={16} className="text-[#EF4444] shrink-0" />}
                       </div>
                     );
                   })}
                 </div>
 
-                <div className="bg-[#F8F5F2] p-3 rounded-xl text-xs text-[#64748B]">
-                  <span className="font-bold text-[#111418] mr-1">Explanation:</span>
+                <div className="bg-[#F8FAF9] p-3.5 rounded-2xl text-xs sm:text-sm text-[#334155] border border-[#E2E8F0]">
+                  <span className="font-extrabold text-[#059669] mr-1.5">Official Rationale:</span>
                   {q.explanation}
                 </div>
               </div>
@@ -324,34 +355,42 @@ export const ExamEngineView: React.FC<ExamEngineViewProps> = ({
 
   return (
     <div className="max-w-4xl mx-auto space-y-4">
-      {/* Sticky Exam Top Bar */}
-      <div className="bg-white border border-[#EAE3DC] rounded-2xl p-4 flex items-center justify-between shadow-xs sticky top-16 z-30">
+      {/* Sticky Tactical Header */}
+      <div className="premium-card rounded-2xl p-4 flex items-center justify-between shadow-md sticky top-16 sm:top-20 z-40">
         <div className="flex items-center space-x-3">
-          <span className="text-xs font-bold text-[#64748B]">
-            Q <span className="text-base text-[#111418]">{currentIndex + 1}</span> of {questions.length}
-          </span>
-          <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#F8F5F2] text-[#111418]">
+          <div className="flex items-baseline space-x-1 text-xs font-bold text-[#64748B]">
+            <span>Question</span>
+            <span className="text-lg font-black text-[#059669]">{currentIndex + 1}</span>
+            <span>of {questions.length}</span>
+          </div>
+
+          <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0]">
             {currentQ.subject}
           </span>
         </div>
 
+        {/* Floating Timer Pill */}
         {timeLimitMinutes > 0 && (
-          <div className="flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#111418] text-white font-mono text-xs font-bold">
-            <Clock size={13} />
-            <span>{formatTime(secondsRemaining)}</span>
+          <div className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-full font-mono text-xs font-extrabold shadow-sm ${
+            secondsRemaining < 300 
+              ? 'bg-red-500 text-white animate-pulse' 
+              : 'bg-[#064E3B] text-white'
+          }`}>
+            <Clock size={14} className="text-[#34D399]" />
+            <span className="tracking-wider">{formatTime(secondsRemaining)}</span>
           </div>
         )}
 
         <div className="flex items-center space-x-2">
           <button
             onClick={onCancel}
-            className="text-xs text-[#64748B] hover:text-[#111418] px-3 py-1.5 rounded-full border border-[#EAE3DC]"
+            className="text-xs font-bold text-[#64748B] hover:text-[#0F172A] px-3 py-1.5 rounded-full border border-[#E2E8F0] cursor-pointer"
           >
-            Quit
+            Leave
           </button>
           <button
             onClick={handleSubmitExam}
-            className="flex items-center space-x-1 text-xs font-bold px-4 py-1.5 rounded-full bg-[#FD6960] text-white shadow-xs hover:bg-[#F25C54] cursor-pointer"
+            className="emerald-btn text-white text-xs font-black px-4 py-1.5 rounded-full flex items-center space-x-1 cursor-pointer"
           >
             <Send size={12} />
             <span>Submit</span>
@@ -359,37 +398,59 @@ export const ExamEngineView: React.FC<ExamEngineViewProps> = ({
         </div>
       </div>
 
-      {/* Main Question Card (Clean White with Soft Shadows) */}
-      <div className="bg-white border border-[#EAE3DC] rounded-3xl p-6 sm:p-8 space-y-6 shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#F1EAE5] pb-3 text-xs">
-          <span className="text-[#64748B] font-medium">Topic: {currentQ.topic}</span>
+      {/* Progress Line */}
+      <div className="w-full h-1.5 rounded-full bg-[#E2E8F0] overflow-hidden">
+        <div 
+          className="h-full bg-gradient-to-r from-[#059669] to-[#10B981] transition-all duration-300"
+          style={{ width: `${progressPct}%` }}
+        />
+      </div>
+
+      {/* Main Focus Card */}
+      <div className="premium-card rounded-3xl p-6 sm:p-10 space-y-6 shadow-xl">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#F1F5F9] pb-4 text-xs">
+          <div className="flex items-center space-x-2">
+            <span className="text-[#64748B] font-bold">Topic:</span>
+            <span className="font-extrabold text-[#0F172A]">{currentQ.topic}</span>
+            <span className="px-2 py-0.5 rounded-full bg-[#F1F5F9] text-[#64748B] font-bold">
+              {currentQ.difficulty}
+            </span>
+          </div>
+
           <div className="flex items-center space-x-2">
             <button
               onClick={() => toggleBookmark(currentQ.id)}
-              className={`p-1.5 rounded-full border ${
-                bookmarkedMap[currentQ.id] ? 'bg-[#FD6960]/15 text-[#FD6960] border-[#FD6960]' : 'border-[#EAE3DC] text-[#64748B]'
+              className={`p-2 rounded-xl border transition-colors cursor-pointer ${
+                bookmarkedMap[currentQ.id] 
+                  ? 'bg-[#ECFDF5] text-[#059669] border-[#059669]' 
+                  : 'border-[#E2E8F0] text-[#64748B] hover:text-[#0F172A]'
               }`}
+              title="Bookmark question"
             >
-              <Bookmark size={14} className={bookmarkedMap[currentQ.id] ? "fill-current" : ""} />
+              <Bookmark size={15} className={bookmarkedMap[currentQ.id] ? "fill-current" : ""} />
             </button>
+
             <button
               onClick={toggleReviewMark}
-              className={`flex items-center space-x-1 px-3 py-1 rounded-full text-xs font-bold border ${
-                markedForReview[currentIndex] ? 'bg-[#FD6960]/15 text-[#FD6960] border-[#FD6960]' : 'border-[#EAE3DC] text-[#64748B]'
+              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-colors cursor-pointer ${
+                markedForReview[currentIndex] 
+                  ? 'bg-amber-50 text-amber-700 border-amber-300 font-extrabold' 
+                  : 'border-[#E2E8F0] text-[#64748B] hover:text-[#0F172A]'
               }`}
             >
-              <Flag size={12} />
-              <span>Review</span>
+              <Flag size={13} />
+              <span>Mark Review</span>
             </button>
           </div>
         </div>
 
-        <h2 className="text-xl sm:text-2xl font-bold text-[#111418] leading-relaxed">
+        {/* Question Text with High Contrast Typography */}
+        <h2 className="text-xl sm:text-2xl font-black text-[#0F172A] leading-relaxed">
           {currentQ.questionText}
         </h2>
 
-        {/* 4 Clean Options */}
-        <div className="space-y-3">
+        {/* 4 Interactive Option Cards */}
+        <div className="space-y-3 pt-2">
           {currentQ.options.map((opt, optIdx) => {
             const isSelected = selectedAnswers[currentIndex] === optIdx;
 
@@ -397,32 +458,33 @@ export const ExamEngineView: React.FC<ExamEngineViewProps> = ({
               <button
                 key={optIdx}
                 onClick={() => handleSelectOption(optIdx)}
-                className={`w-full text-left p-4 rounded-2xl border transition-all flex items-center justify-between cursor-pointer ${
+                className={`w-full text-left p-4 sm:p-5 rounded-2xl border transition-all duration-150 flex items-center justify-between cursor-pointer ${
                   isSelected
-                    ? 'bg-[#111418] text-white border-[#111418] shadow-md'
-                    : 'bg-[#F8F5F2]/80 hover:bg-[#F1EAE5] border-[#EAE3DC] text-[#111418]'
+                    ? 'bg-[#064E3B] text-white border-[#064E3B] shadow-md translate-x-1'
+                    : 'bg-white hover:bg-[#F8FAF9] border-[#E2E8F0] text-[#0F172A] hover:border-[#A7F3D0]'
                 }`}
               >
-                <div className="flex items-center space-x-3">
-                  <div className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs ${
-                    isSelected ? 'bg-white text-[#111418]' : 'bg-white text-[#64748B] border border-[#EAE3DC]'
+                <div className="flex items-center space-x-3.5">
+                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xs ${
+                    isSelected ? 'bg-white text-[#064E3B]' : 'bg-[#F1F5F9] text-[#64748B] border border-[#E2E8F0]'
                   }`}>
                     {String.fromCharCode(65 + optIdx)}
                   </div>
-                  <span className="text-sm sm:text-base font-medium">{opt}</span>
+                  <span className="text-sm sm:text-base font-bold">{opt}</span>
                 </div>
-                {isSelected && <CheckCircle2 size={16} className="text-[#FD6960]" />}
+
+                {isSelected && <CheckCircle2 size={18} className="text-[#34D399] shrink-0" />}
               </button>
             );
           })}
         </div>
 
-        {/* Navigation Arrows */}
-        <div className="flex items-center justify-between pt-4 border-t border-[#F1EAE5]">
+        {/* Bottom Navigation */}
+        <div className="flex items-center justify-between pt-6 border-t border-[#F1F5F9]">
           <button
             onClick={() => setCurrentIndex(prev => Math.max(0, prev - 1))}
             disabled={currentIndex === 0}
-            className="flex items-center space-x-1 px-4 py-2 rounded-full bg-[#F8F5F2] hover:bg-[#F1EAE5] text-[#111418] disabled:opacity-40 text-xs font-bold"
+            className="flex items-center space-x-1.5 px-5 py-2.5 rounded-xl bg-[#F1F5F9] hover:bg-[#E2E8F0] text-[#0F172A] disabled:opacity-40 text-xs font-bold cursor-pointer"
           >
             <ChevronLeft size={16} />
             <span>Previous</span>
@@ -435,7 +497,7 @@ export const ExamEngineView: React.FC<ExamEngineViewProps> = ({
           <button
             onClick={() => setCurrentIndex(prev => Math.min(questions.length - 1, prev + 1))}
             disabled={currentIndex === questions.length - 1}
-            className="flex items-center space-x-1 px-4 py-2 rounded-full bg-[#111418] text-white hover:bg-[#20232A] disabled:opacity-40 text-xs font-bold"
+            className="emerald-btn text-white text-xs font-bold px-6 py-2.5 rounded-xl flex items-center space-x-1.5 disabled:opacity-40 cursor-pointer"
           >
             <span>Next</span>
             <ChevronRight size={16} />
@@ -443,25 +505,33 @@ export const ExamEngineView: React.FC<ExamEngineViewProps> = ({
         </div>
       </div>
 
-      {/* Question Palette */}
-      <div className="bg-white border border-[#EAE3DC] rounded-2xl p-4 shadow-xs">
-        <div className="text-xs font-bold text-[#64748B] mb-2 uppercase">Question Palette</div>
-        <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto">
+      {/* Question Palette with Status Dots */}
+      <div className="premium-card rounded-2xl p-4 sm:p-5 shadow-xs">
+        <div className="flex items-center justify-between mb-3 text-xs font-bold text-[#64748B]">
+          <span>QUESTION PALETTE</span>
+          <div className="flex items-center space-x-3 text-[11px]">
+            <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-[#059669]" /> Answered</span>
+            <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-amber-400" /> Flagged</span>
+            <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-[#E2E8F0]" /> Remaining</span>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-2 max-h-36 overflow-y-auto pr-1">
           {questions.map((_, idx) => {
             const isAnswered = selectedAnswers[idx] !== undefined;
             const isFlagged = markedForReview[idx];
             const isCurrent = currentIndex === idx;
 
-            let style = 'bg-[#F8F5F2] text-[#64748B] border-[#EAE3DC]';
-            if (isAnswered) style = 'bg-[#111418] text-white border-[#111418] font-bold';
-            else if (isFlagged) style = 'bg-[#FD6960]/20 text-[#FD6960] border-[#FD6960] font-bold';
+            let style = 'bg-[#F1F5F9] text-[#64748B] border-[#E2E8F0]';
+            if (isAnswered) style = 'bg-[#059669] text-white border-[#059669] font-black';
+            else if (isFlagged) style = 'bg-amber-100 text-amber-800 border-amber-300 font-extrabold';
 
             return (
               <button
                 key={idx}
                 onClick={() => setCurrentIndex(idx)}
-                className={`w-7 h-7 rounded-lg text-xs font-bold border transition-all ${style} ${
-                  isCurrent ? 'ring-2 ring-[#FD6960]' : ''
+                className={`w-8 h-8 rounded-xl text-xs font-bold border transition-all cursor-pointer ${style} ${
+                  isCurrent ? 'ring-2 ring-[#059669] ring-offset-2' : ''
                 }`}
               >
                 {idx + 1}
