@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   LayoutDashboard, 
   FileSpreadsheet, 
@@ -11,7 +11,9 @@ import {
   Sparkles,
   Flame,
   Zap,
-  Target
+  Target,
+  Menu,
+  X
 } from 'lucide-react';
 import { AppStorage } from '../services/storage';
 
@@ -41,8 +43,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onQuickStartDaily 
 }) => {
   const streakStats = AppStorage.getStreakStats();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Core high-frequency navigation tabs
   const primaryNavItems: { id: ActiveTab; label: string; icon: React.ReactNode }[] = [
     { id: 'dashboard', label: 'Overview', icon: <LayoutDashboard size={15} /> },
     { id: 'daily-exam', label: 'Daily 45', icon: <Target size={15} /> },
@@ -62,47 +64,55 @@ export const Navbar: React.FC<NavbarProps> = ({
       if (!confirmLeave) return;
     }
     setActiveTab(tabId);
+    setMobileMenuOpen(false);
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/85 backdrop-blur-xl border-b border-[#E2E8F0] shadow-[0_4px_20px_-4px_rgba(6,78,59,0.05)]">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20 gap-3">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#E2E8F0] shadow-[0_2px_12px_-2px_rgba(6,78,59,0.05)]">
+      <div className="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-14 sm:h-20 gap-2">
           
-          {/* Brand Logo with Forest Emerald Glow */}
-          <div 
-            className="flex items-center space-x-3 cursor-pointer shrink-0 select-none group" 
-            onClick={() => handleNavClick('dashboard')}
-          >
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-[#059669] via-[#047857] to-[#064E3B] flex items-center justify-center text-white shadow-[0_4px_16px_rgba(5,150,105,0.35)] group-hover:scale-105 transition-transform duration-200">
-              <Zap size={20} className="text-white fill-white" />
-            </div>
-            <div>
-              <div className="flex items-center space-x-2">
-                <span className="font-display font-black text-xl sm:text-2xl tracking-tight text-[#0F172A]">
-                  GovtPrep<span className="text-[#059669]">.</span>
-                </span>
-                <span className="text-[10px] uppercase tracking-wider font-extrabold px-2 py-0.5 rounded-full bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0]">
-                  PRO
-                </span>
+          {/* Brand Logo & Mobile Toggle */}
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-1.5 rounded-xl border border-[#E2E8F0] text-[#0F172A] hover:bg-[#F1F5F9] md:hidden cursor-pointer"
+              aria-label="Toggle Navigation Menu"
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+
+            <div 
+              className="flex items-center space-x-2 cursor-pointer select-none" 
+              onClick={() => handleNavClick('dashboard')}
+            >
+              <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#059669] via-[#047857] to-[#064E3B] flex items-center justify-center text-white shadow-sm shrink-0">
+                <Zap size={16} className="text-white fill-white" />
               </div>
-              <p className="text-[11px] text-[#64748B] font-medium hidden md:block -mt-0.5">
-                Bangladesh Civil & Public Exam Mastery
-              </p>
+              <div>
+                <div className="flex items-center space-x-1.5">
+                  <span className="font-display font-black text-lg sm:text-2xl tracking-tight text-[#0F172A]">
+                    GovtPrep<span className="text-[#059669]">.</span>
+                  </span>
+                  <span className="text-[9px] uppercase tracking-wider font-extrabold px-1.5 py-0.2 rounded-full bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0]">
+                    PRO
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Desktop Fluid Navigation Pill Group */}
-          <nav className="hidden xl:flex items-center space-x-1 bg-[#F1F5F9]/80 p-1.5 rounded-full border border-[#E2E8F0]">
+          {/* Desktop Navigation Pill Group */}
+          <nav className="hidden lg:flex items-center space-x-1 bg-[#F1F5F9]/80 p-1 rounded-full border border-[#E2E8F0]">
             {primaryNavItems.map((item) => {
               const isActive = activeTab === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer ${
+                  className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#059669] to-[#047857] text-white shadow-[0_2px_10px_rgba(5,150,105,0.3)]'
+                      ? 'bg-gradient-to-r from-[#059669] to-[#047857] text-white shadow-xs'
                       : 'text-[#64748B] hover:text-[#0F172A] hover:bg-white/80'
                   }`}
                 >
@@ -113,49 +123,76 @@ export const Navbar: React.FC<NavbarProps> = ({
             })}
           </nav>
 
-          {/* Right Action Bar: Streak Badge + Instant Exam CTA */}
-          <div className="flex items-center space-x-2 sm:space-x-3 shrink-0">
+          {/* Right Action Bar */}
+          <div className="flex items-center space-x-1.5 sm:space-x-3 shrink-0">
             {/* Streak Status Pill */}
             <div 
-              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-[#ECFDF5] border border-[#A7F3D0] shadow-xs text-xs font-bold text-[#065F46]"
-              title={`Consistency: ${streakStats.currentStreak} day streak`}
+              className="flex items-center space-x-1 px-2.5 py-1 sm:py-1.5 rounded-full bg-[#ECFDF5] border border-[#A7F3D0] text-xs font-bold text-[#065F46]"
             >
-              <Flame size={15} className="text-[#EA580C] fill-[#EA580C]" />
+              <Flame size={14} className="text-[#EA580C] fill-[#EA580C]" />
               <span className="font-extrabold text-[#0F172A]">{streakStats.currentStreak}</span>
-              <span className="text-[10px] uppercase text-[#059669] hidden sm:inline">Days</span>
+              <span className="text-[10px] uppercase text-[#059669] hidden xs:inline">d</span>
             </div>
 
-            {/* Instant Start Exam Hero CTA (Visible everywhere for instant action) */}
+            {/* Instant Start Exam CTA */}
             <button
               onClick={onQuickStartDaily}
-              className="emerald-btn text-white text-xs sm:text-sm font-extrabold px-4 sm:px-5 py-2 sm:py-2.5 rounded-full flex items-center space-x-1.5 cursor-pointer"
+              className="emerald-btn text-white text-xs sm:text-sm font-black px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-full flex items-center space-x-1 cursor-pointer whitespace-nowrap"
             >
-              <Zap size={14} className="fill-white" />
-              <span>Start Daily 45</span>
+              <Zap size={13} className="fill-white" />
+              <span className="hidden xs:inline">Start Daily 45</span>
+              <span className="xs:hidden">Daily 45</span>
             </button>
           </div>
         </div>
 
-        {/* Mobile Horizontal Quick Bar */}
-        <nav className="flex xl:hidden space-x-1.5 overflow-x-auto no-scrollbar py-2.5 border-t border-[#E2E8F0]/70 text-xs font-bold">
-          {primaryNavItems.map((item) => {
-            const isActive = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full whitespace-nowrap transition-all duration-150 shrink-0 cursor-pointer ${
-                  isActive
-                    ? 'bg-gradient-to-r from-[#059669] to-[#047857] text-white shadow-xs'
-                    : 'bg-white/90 text-[#64748B] border border-[#E2E8F0]'
-                }`}
-              >
-                {item.icon}
-                <span>{item.label}</span>
-              </button>
-            );
-          })}
-        </nav>
+        {/* Mobile Flyout Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden py-3 border-t border-[#E2E8F0] space-y-1 animate-in fade-in duration-150">
+            <div className="grid grid-cols-2 gap-1.5">
+              {primaryNavItems.map((item) => {
+                const isActive = activeTab === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => handleNavClick(item.id)}
+                    className={`flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-bold transition-all text-left ${
+                      isActive
+                        ? 'bg-[#059669] text-white'
+                        : 'bg-[#F8FAF9] text-[#64748B] hover:text-[#0F172A]'
+                    }`}
+                  >
+                    {item.icon}
+                    <span>{item.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Mobile Horizontal Quick Bar (when menu closed) */}
+        {!mobileMenuOpen && (
+          <nav className="flex lg:hidden space-x-1 overflow-x-auto no-scrollbar py-2 border-t border-[#E2E8F0]/70 text-xs font-bold">
+            {primaryNavItems.map((item) => {
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={`flex items-center space-x-1 px-3 py-1.5 rounded-full whitespace-nowrap transition-all duration-150 shrink-0 cursor-pointer ${
+                    isActive
+                      ? 'bg-[#059669] text-white shadow-xs'
+                      : 'bg-white text-[#64748B] border border-[#E2E8F0]'
+                  }`}
+                >
+                  {item.icon}
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
+          </nav>
+        )}
       </div>
     </header>
   );
