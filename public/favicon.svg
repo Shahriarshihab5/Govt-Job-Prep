@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" rx="20" fill="#121316"/>
+  <rect x="5" y="5" width="90" height="90" rx="16" fill="none" stroke="#E5B869" stroke-width="2"/>
+  <text x="50" y="66" font-family="'Albert Sans', sans-serif" font-size="52" font-weight="bold" fill="#E5B869" text-anchor="middle">বি</text>
+</svg>
