@@ -1,32 +1,65 @@
-# React + TypeScript + Vite
+# 🇧🇩 Bangladesh Govt Job Prep Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A high-performance personal Bangladesh Government recruitment exam preparation platform featuring daily 45-MCQ examinations, verified previous-question banks, spaced repetition revision, and detailed score analytics.
 
-Currently, two official plugins are available:
+Designed with a modern, clean light aesthetic (inspired by modern SaaS dashboards) and fully optimized for mobile devices and desktop.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🚀 Key Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Daily 45-MCQ Exam Engine**:
+  - Automatically assembled daily quota: 15 Bangla, 10 Mathematics, 10 General Knowledge, 10 English.
+  - Balanced distribution across Easy, Medium, and Hard difficulty tiers.
+  - Interactive timer, jump palette, review flags, and official negative marking deductions (`-0.5` or `-0.25`).
+- **Complete Score Progress & Historical Analytics**:
+  - Trajectory area chart displaying past test scores and accuracy trends.
+  - Core subject preparedness comparison bar graphs.
+  - Average time spent per question (PSC pace benchmark).
+  - Algorithmic weak-topic detector (identifies topics needing focus).
+- **Automated Mistake Notebook**:
+  - Saves missed questions automatically along with your chosen wrong option and full explanations.
+- **Spaced Repetition System (SRS)**:
+  - Scientifically schedules missed questions (Day 1 → Day 2 → Day 7 → Day 15 → Day 30).
+- **Verified Question Bank**:
+  - Categorized with strict provenance labels: Verified Past Questions, Imported/Unverified, AI Practice, and User Created.
+- **PWA & Mobile-First**:
+  - Installable on mobile home screens (Android/iOS) with Service Worker and manifest.
+- **100% Free & Local Database**:
+  - Powered by IndexedDB and LocalStorage with zero-cost architecture.
+  - Complete JSON backup export and restore support.
 
-## Expanding the Oxlint configuration
+---
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## 🛠️ Deploying to GitHub & Vercel (100% Free)
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+### Step 1: Push to GitHub
+1. Create a new repository on [GitHub](https://github.com/new) (e.g., `govt-job-prep-app`).
+2. Run these commands in your project directory:
+   ```bash
+   git branch -M main
+   git remote add origin https://github.com/YOUR_USERNAME/govt-job-prep-app.git
+   git push -u origin main
+   ```
+
+### Step 2: Deploy to Vercel (Free)
+1. Go to [vercel.com](https://vercel.com) and log in with your GitHub account.
+2. Click **"Add New"** > **"Project"**.
+3. Select your `govt-job-prep-app` repository and click **"Import"**.
+4. Leave framework settings as **Vite** and click **"Deploy"**.
+5. Your app will be live on a free `https://*.vercel.app` URL within seconds!
+
+---
+
+## 💻 Local Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
 ```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
