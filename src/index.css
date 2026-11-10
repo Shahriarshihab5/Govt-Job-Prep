@@ -1,15 +1,12 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg-base: #F4F6F4;
-  --color-bg-card: #FFFFFF;
-  --color-text-main: #141B18;
-  --color-text-muted: #5D6862;
-  --color-border-subtle: #E8ECE8;
-  --color-border-card: #DDE3DD;
-
-  --color-sage-accent: #2E5A44;
-  --color-sage-soft: #EAF0EC;
+  --color-emerald-deep: #064E3B;
+  --color-emerald-primary: #059669;
+  --color-emerald-hover: #047857;
+  --color-emerald-light: #10B981;
+  --color-emerald-soft: #ECFDF5;
+  --color-emerald-glow: rgba(16, 185, 129, 0.18);
   
   --font-display: 'Plus Jakarta Sans', sans-serif;
   --font-body: 'Plus Jakarta Sans', sans-serif;
@@ -18,20 +15,54 @@
 
 body {
   font-family: var(--font-body);
-  /* Organic greyish-white nature vibe: soft misty stone with organic olive/sage and pebble hues */
-  background-color: #F3F5F3;
+  /* Ultra-premium emerald luxury green & porcelain white aura */
+  background-color: #F8FAF9;
   background-image: 
-    radial-gradient(at 0% 0%, rgba(228, 235, 229, 0.75) 0px, transparent 55%),
-    radial-gradient(at 100% 0%, rgba(235, 238, 233, 0.65) 0px, transparent 50%),
-    radial-gradient(at 50% 100%, rgba(225, 232, 227, 0.7) 0px, transparent 55%);
+    radial-gradient(at 0% 0%, rgba(209, 250, 229, 0.7) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(236, 253, 245, 0.8) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(255, 255, 255, 0.9) 0px, transparent 65%),
+    radial-gradient(at 100% 100%, rgba(204, 251, 241, 0.5) 0px, transparent 50%);
   background-attachment: fixed;
-  color: #171E1A;
+  color: #0F172A;
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Custom modern scrollbars */
+/* Glassmorphic card utility */
+.premium-card {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(16, 185, 129, 0.12);
+  box-shadow: 0 10px 30px -5px rgba(6, 78, 59, 0.04), 0 4px 6px -2px rgba(6, 78, 59, 0.02);
+}
+
+.premium-card-hover {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.premium-card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 35px -8px rgba(6, 78, 59, 0.08), 0 8px 10px -4px rgba(6, 78, 59, 0.03);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+/* Luxury Emerald Shimmer Button */
+.emerald-btn {
+  background: linear-gradient(135deg, #059669 0%, #047857 50%, #065F46 100%);
+  box-shadow: 0 4px 14px 0 rgba(5, 150, 105, 0.35);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.emerald-btn:hover {
+  background: linear-gradient(135deg, #10B981 0%, #059669 50%, #047857 100%);
+  box-shadow: 0 6px 20px 0 rgba(5, 150, 105, 0.45);
+  transform: translateY(-1px);
+}
+.emerald-btn:active {
+  transform: translateY(1px);
+}
+
+/* Premium scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -40,9 +71,9 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #C4CDC6;
+  background: #A7F3D0;
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #A6B2A8;
+  background: #6EE7B7;
 }

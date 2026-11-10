@@ -56,11 +56,12 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col font-body">
+    <div className="min-h-screen flex flex-col font-body selection:bg-[#059669] selection:text-white">
       <Navbar 
         activeTab={activeTab} 
         setActiveTab={setActiveTab} 
         examInProgress={examActive} 
+        onQuickStartDaily={startDailyExam}
       />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
@@ -83,19 +84,19 @@ export const App: React.FC = () => {
 
             {activeTab === 'daily-exam' && (
               <div className="max-w-2xl mx-auto space-y-6">
-                <div className="bg-white border border-[#EAE3DC] rounded-3xl p-8 text-center space-y-4 shadow-sm">
-                  <span className="text-xs font-bold uppercase px-3 py-1 rounded-full bg-[#FD6960]/15 text-[#FD6960]">
-                    Daily 45 MCQ Test
+                <div className="premium-card rounded-3xl p-8 sm:p-10 text-center space-y-5">
+                  <span className="text-xs font-extrabold uppercase px-3.5 py-1 rounded-full bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0]">
+                    Official Examination Simulator
                   </span>
-                  <h2 className="text-3xl font-extrabold text-[#111418]">
-                    Start Today's Recruitment Exam
+                  <h2 className="text-3xl sm:text-4xl font-black text-[#0F172A] tracking-tight">
+                    Start Today's 45-Question Test
                   </h2>
-                  <p className="text-xs sm:text-sm text-[#64748B] max-w-md mx-auto">
-                    Standard BCS & Govt allocation: 15 Bangla, 10 Mathematics, 10 General Knowledge, and 10 English questions.
+                  <p className="text-xs sm:text-sm text-[#64748B] max-w-md mx-auto leading-relaxed">
+                    Automatically assembled with 15 Bangla, 10 Mathematics, 10 General Knowledge, and 10 English questions. Standard negative marking (-0.5) enforced.
                   </p>
                   <button
                     onClick={startDailyExam}
-                    className="px-8 py-3.5 rounded-full bg-[#111418] text-white font-bold text-xs hover:bg-[#20232A] shadow-md cursor-pointer"
+                    className="emerald-btn text-white font-black text-sm px-8 py-4 rounded-full cursor-pointer shadow-xl hover:scale-105 transition-transform"
                   >
                     Launch 45 MCQ Daily Exam Now
                   </button>
@@ -138,13 +139,15 @@ export const App: React.FC = () => {
         )}
       </main>
 
-      <footer className="border-t border-[#EAE3DC] bg-white/70 py-4 text-xs text-[#64748B]">
+      {/* Clean Footer */}
+      <footer className="border-t border-[#E2E8F0] bg-white/70 backdrop-blur-md py-4 text-xs text-[#64748B]">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <div className="font-medium text-[#111418]">
-            Govt Job Prep Tracker • Modern Clean Light Design
+          <div className="font-bold text-[#0F172A] flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-[#059669]" />
+            <span>GovtPrep BD • High Performance Study Platform</span>
           </div>
-          <div className="font-semibold text-[#64748B]">
-            PWA Mobile Optimized • 100% Free • IndexedDB Persistent
+          <div className="font-medium text-[#64748B]">
+            PWA Mobile Optimized • IndexedDB Offline Storage • 100% Free Tier
           </div>
         </div>
       </footer>

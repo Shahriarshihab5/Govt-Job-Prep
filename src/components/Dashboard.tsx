@@ -6,12 +6,18 @@ import {
   CheckCircle2, 
   Clock, 
   TrendingUp, 
-  RotateCcw,
-  BookOpen,
-  ArrowUpRight,
-  ShieldCheck,
+  RotateCcw, 
+  BookOpen, 
+  ArrowUpRight, 
+  Award, 
+  Zap, 
   ChevronRight,
-  Sparkles
+  ShieldCheck,
+  BrainCircuit,
+  Compass,
+  FileCheck2,
+  Sparkles,
+  NotebookPen
 } from 'lucide-react';
 import { 
   ResponsiveContainer, 
@@ -57,19 +63,19 @@ export const Dashboard: React.FC<DashboardProps> = ({ setActiveTab, onStartDaily
 
   const dueRevisionsCount = revisions.filter(r => r.status === 'due' || new Date(r.dueAt) <= new Date()).length;
 
-  // Real chart trajectory data
+  // Chart data
   const chartTrajectory = sessions.length > 0
-    ? [...sessions].reverse().map((s, idx) => ({
+    ? [...sessions].reverse().slice(-8).map((s, idx) => ({
         label: `Test ${idx + 1}`,
         score: s.score,
         accuracy: s.accuracy,
       }))
     : [
-        { label: 'W1', score: 28, accuracy: 62 },
-        { label: 'W2', score: 32, accuracy: 71 },
-        { label: 'W3', score: 35, accuracy: 78 },
-        { label: 'W4', score: 38, accuracy: 84 },
-        { label: 'W5', score: 41, accuracy: 91 },
+        { label: 'Set 1', score: 28, accuracy: 62 },
+        { label: 'Set 2', score: 32, accuracy: 71 },
+        { label: 'Set 3', score: 35, accuracy: 78 },
+        { label: 'Set 4', score: 38, accuracy: 84 },
+        { label: 'Set 5', score: 42, accuracy: 93 },
       ];
 
   // Subject statistics
@@ -89,80 +95,205 @@ export const Dashboard: React.FC<DashboardProps> = ({ setActiveTab, onStartDaily
   });
 
   return (
-    <div className="space-y-6">
-      {/* Title & Date Row */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#111418]">
-            Study Workspace
-          </h1>
-          <p className="text-xs sm:text-sm text-[#64748B]">
-            Bangladesh Government Recruitment Platform • 45 Daily MCQs Target
-          </p>
-        </div>
-
-        <div className="flex items-center space-x-2">
-          <button
-            onClick={onStartDailyExam}
-            className="flex items-center space-x-2 px-5 py-2.5 rounded-full bg-[#111418] text-white text-xs font-bold hover:bg-[#20232A] transition-all shadow-sm cursor-pointer"
-          >
-            <Play size={14} className="fill-white" />
-            <span>Launch Daily 45 MCQ Test</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Hero Grid Section (Matching Deodel Reference Card Layout) */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div className="space-y-6 sm:space-y-8">
+      
+      {/* 🌟 ULTRA LUXURY HERO COMMAND CENTER: Emerald Deep & Glow */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#064E3B] via-[#065F46] to-[#022C22] text-white p-6 sm:p-10 shadow-[0_20px_50px_-10px_rgba(6,78,59,0.35)] border border-[#059669]/30">
         
-        {/* Left Col (2-Spans): Vibrant Coral/Violet Gradient Chart Hero Card */}
-        <div className="lg:col-span-2 bg-white rounded-3xl p-6 border border-[#EAE3DC] shadow-[0_4px_24px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+        {/* Soft background ambient glow orbs */}
+        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-[#10B981]/20 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-[#34D399]/15 blur-3xl pointer-events-none" />
+
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
           
-          {/* Card Header with Top Gradient Banner */}
-          <div className="rounded-2xl p-5 text-white bg-gradient-to-r from-[#FF5E5B] via-[#D84374] to-[#4A4DE6] shadow-sm mb-6">
-            <div className="flex items-center justify-between text-xs font-medium opacity-90 mb-3">
-              <span className="font-bold tracking-wide uppercase text-[11px]">Examination Preparedness & Trajectory</span>
-              <span className="text-[11px] bg-white/20 px-2.5 py-0.5 rounded-full backdrop-blur-xs">
-                Updated {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </span>
+          {/* Left Hero Message */}
+          <div className="space-y-3 max-w-2xl">
+            <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs font-extrabold uppercase tracking-widest text-[#6EE7B7]">
+              <Sparkles size={13} className="text-[#34D399]" />
+              <span>Target 46th BCS & Recruitment Mastery</span>
             </div>
 
-            {/* Metric Numbers */}
-            <div className="grid grid-cols-3 gap-2 pt-1">
-              <div>
-                <div className="flex items-baseline space-x-1.5">
-                  <span className="text-2xl sm:text-3xl font-black">{overallAccuracy}%</span>
-                  <span className="text-[10px] bg-white/25 px-1.5 py-0.5 rounded-full font-bold">+2.4%</span>
-                </div>
-                <div className="text-[11px] opacity-80 font-medium">Overall Accuracy</div>
-              </div>
+            <h1 className="font-display font-black text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-[1.15]">
+              Ace Your Government Recruitment Exam.
+            </h1>
 
-              <div>
-                <div className="flex items-baseline space-x-1.5">
-                  <span className="text-2xl sm:text-3xl font-black">{todayActivity.completedCount}/{todayActivity.targetCount}</span>
-                  <span className="text-[10px] bg-white/25 px-1.5 py-0.5 rounded-full font-bold">Target</span>
-                </div>
-                <div className="text-[11px] opacity-80 font-medium">Today's Completed</div>
-              </div>
+            <p className="text-sm sm:text-base text-[#D1FAE5]/85 font-medium leading-relaxed max-w-xl">
+              Daily authentic 45-MCQ test engine, scientific spaced repetition, and automatic error diagnostics—all engineered to guarantee retention.
+            </p>
 
-              <div>
-                <div className="flex items-baseline space-x-1.5">
-                  <span className="text-2xl sm:text-3xl font-black">{streakStats.currentStreak}d</span>
-                  <span className="text-[10px] bg-white/25 px-1.5 py-0.5 rounded-full font-bold">Streak</span>
-                </div>
-                <div className="text-[11px] opacity-80 font-medium">Consecutive Days</div>
-              </div>
+            {/* Quick Badges */}
+            <div className="pt-2 flex flex-wrap gap-2 text-xs font-semibold text-[#A7F3D0]">
+              <span className="flex items-center gap-1.5 bg-black/20 px-3 py-1 rounded-full border border-white/10">
+                <CheckCircle2 size={14} className="text-[#34D399]" /> 15 Bangla • 10 Math • 10 GK • 10 English
+              </span>
+              <span className="flex items-center gap-1.5 bg-black/20 px-3 py-1 rounded-full border border-white/10">
+                <ShieldCheck size={14} className="text-[#34D399]" /> Negative mark -0.5 enforced
+              </span>
             </div>
           </div>
 
-          {/* Smooth Area Chart (like Reference Graphic) */}
-          <div className="h-56 w-full">
+          {/* Right Hero Action Card (Glassmorphic) */}
+          <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 sm:p-7 shadow-2xl flex flex-col justify-between min-w-[320px] max-w-sm shrink-0">
+            <div>
+              <div className="flex items-center justify-between text-xs font-bold text-[#A7F3D0] mb-2 uppercase tracking-wider">
+                <span>Today's Quota</span>
+                <span className="bg-[#10B981]/30 text-white px-2.5 py-0.5 rounded-full text-[11px]">
+                  {todayActivity.completedCount >= todayActivity.targetCount ? 'Achieved ✓' : 'Incomplete'}
+                </span>
+              </div>
+
+              <div className="flex items-baseline space-x-2 my-2">
+                <span className="text-4xl sm:text-5xl font-black text-white">
+                  {todayActivity.completedCount}
+                </span>
+                <span className="text-xl text-[#A7F3D0] font-bold">
+                  / {todayActivity.targetCount} MCQs
+                </span>
+              </div>
+
+              {/* Progress bar */}
+              <div className="w-full h-3 rounded-full bg-white/15 overflow-hidden my-3 p-0.5">
+                <div 
+                  className="h-full bg-gradient-to-r from-[#34D399] to-[#6EE7B7] rounded-full transition-all duration-700 shadow-sm"
+                  style={{ width: `${Math.min(100, (todayActivity.completedCount / todayActivity.targetCount) * 100)}%` }}
+                />
+              </div>
+
+              <p className="text-xs text-[#D1FAE5]/80">
+                {todayActivity.targetCount - todayActivity.completedCount > 0 
+                  ? `${todayActivity.targetCount - todayActivity.completedCount} questions remaining to maintain streak.`
+                  : 'Daily target fully finished! Consistency streak updated.'}
+              </p>
+            </div>
+
+            {/* Big Launch Button */}
+            <div className="mt-6 pt-4 border-t border-white/10 flex flex-col gap-2.5">
+              <button
+                onClick={onStartDailyExam}
+                className="w-full py-3.5 px-6 rounded-2xl bg-white text-[#064E3B] hover:bg-[#ECFDF5] font-black text-sm transition-all duration-200 shadow-lg hover:shadow-xl active:scale-[0.98] flex items-center justify-center space-x-2 cursor-pointer"
+              >
+                <Play size={16} className="fill-[#064E3B]" />
+                <span>Start Daily 45 Exam</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab('practice-test')}
+                className="w-full py-2.5 px-4 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition-colors flex items-center justify-center space-x-1 cursor-pointer"
+              >
+                <span>Launch Quick 20 Practice Drill</span>
+                <ChevronRight size={14} />
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      {/* 🚀 QUICK ACCESS HUBS (Eliminating boring UI with distinct purpose tiles) */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {[
+          {
+            title: 'Mistake Notebook',
+            count: mistakes.length,
+            unit: 'Saved Errors',
+            desc: 'Review questions you missed',
+            icon: <NotebookPen size={20} className="text-[#059669]" />,
+            tab: 'mistake-notebook' as const,
+            badge: 'Active Recall'
+          },
+          {
+            title: 'Spaced Revision',
+            count: dueRevisionsCount,
+            unit: 'Due Today',
+            desc: 'Scientific memory booster',
+            icon: <BrainCircuit size={20} className="text-[#059669]" />,
+            tab: 'revision-center' as const,
+            badge: dueRevisionsCount > 0 ? 'Urgent' : 'Clear'
+          },
+          {
+            title: 'Question Bank',
+            count: questions.length,
+            unit: 'Curated MCQs',
+            desc: 'Verified past BCS & Bank',
+            icon: <BookOpen size={20} className="text-[#059669]" />,
+            tab: 'question-bank' as const,
+            badge: 'Verified'
+          },
+          {
+            title: 'Weekly 100 Mock',
+            count: '100',
+            unit: 'Grand Test',
+            desc: 'Full-length simulation',
+            icon: <Award size={20} className="text-[#059669]" />,
+            tab: 'weekly-mock' as const,
+            badge: 'Timed'
+          },
+        ].map((hub) => (
+          <div
+            key={hub.title}
+            onClick={() => setActiveTab(hub.tab)}
+            className="premium-card premium-card-hover rounded-3xl p-5 cursor-pointer flex flex-col justify-between group"
+          >
+            <div className="flex items-center justify-between mb-3">
+              <div className="w-10 h-10 rounded-2xl bg-[#ECFDF5] border border-[#A7F3D0] flex items-center justify-center group-hover:scale-110 transition-transform">
+                {hub.icon}
+              </div>
+              <span className={`text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full ${
+                hub.badge === 'Urgent' ? 'bg-amber-100 text-amber-800' : 'bg-[#ECFDF5] text-[#065F46]'
+              }`}>
+                {hub.badge}
+              </span>
+            </div>
+
+            <div>
+              <div className="flex items-baseline space-x-1.5">
+                <span className="text-3xl font-black text-[#0F172A]">{hub.count}</span>
+                <span className="text-xs font-bold text-[#64748B]">{hub.unit}</span>
+              </div>
+              <h3 className="text-sm font-bold text-[#0F172A] mt-1">{hub.title}</h3>
+              <p className="text-xs text-[#64748B] mt-0.5">{hub.desc}</p>
+            </div>
+
+            <div className="mt-4 pt-3 border-t border-[#F1F5F9] flex items-center justify-between text-xs font-bold text-[#059669] group-hover:translate-x-0.5 transition-transform">
+              <span>Open Module</span>
+              <ArrowUpRight size={14} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* 📊 ANALYTICS TRAJECTORY & CORE PERFORMANCE BENTO */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {/* Left 2 Cols: Historical Progress Area Graph */}
+        <div className="lg:col-span-2 premium-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+            <div>
+              <div className="flex items-center space-x-2 text-xs font-extrabold text-[#059669] uppercase tracking-wider">
+                <TrendingUp size={14} />
+                <span>Accuracy & Score Velocity</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-black text-[#0F172A] mt-1">
+                Recent Examination Performance Trend
+              </h2>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0]">
+                Overall Accuracy: {overallAccuracy}%
+              </span>
+            </div>
+          </div>
+
+          {/* Smooth Recharts Area Graph with Emerald Glow */}
+          <div className="h-60 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={chartTrajectory}>
                 <defs>
-                  <linearGradient id="scoreGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#FD6960" stopOpacity={0.28}/>
-                    <stop offset="95%" stopColor="#4A4DE6" stopOpacity={0.0}/>
+                  <linearGradient id="emeraldGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#059669" stopOpacity={0.35}/>
+                    <stop offset="95%" stopColor="#10B981" stopOpacity={0.0}/>
                   </linearGradient>
                 </defs>
                 <XAxis dataKey="label" stroke="#94A3B8" fontSize={11} tickLine={false} axisLine={false} />
@@ -170,157 +301,91 @@ export const Dashboard: React.FC<DashboardProps> = ({ setActiveTab, onStartDaily
                 <Tooltip 
                   contentStyle={{ 
                     backgroundColor: '#FFFFFF', 
-                    borderRadius: '12px', 
-                    borderColor: '#EAE3DC', 
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
-                    fontSize: '12px' 
+                    borderRadius: '16px', 
+                    borderColor: '#A7F3D0', 
+                    boxShadow: '0 10px 25px -5px rgba(6,78,59,0.1)',
+                    fontSize: '12px',
+                    fontWeight: 600,
                   }} 
                 />
                 <Area 
                   type="monotone" 
                   dataKey="accuracy" 
-                  stroke="#FD6960" 
+                  stroke="#059669" 
                   strokeWidth={3} 
                   fillOpacity={1} 
-                  fill="url(#scoreGradient)" 
+                  fill="url(#emeraldGradient)" 
                 />
               </AreaChart>
             </ResponsiveContainer>
           </div>
 
-          <div className="flex items-center justify-between pt-4 mt-2 border-t border-[#F1EAE5] text-xs text-[#64748B]">
-            <span>Benchmark: Standard 70%+ score for BCS Preliminary qualification</span>
+          <div className="flex items-center justify-between pt-4 mt-2 border-t border-[#F1F5F9] text-xs text-[#64748B]">
+            <span>Continuous tracking across {sessions.length} recorded exam attempts</span>
             <button 
               onClick={() => setActiveTab('analytics')}
-              className="text-[#111418] font-bold hover:underline flex items-center space-x-1"
+              className="text-[#059669] font-extrabold hover:underline flex items-center space-x-1 cursor-pointer"
             >
-              <span>View Full Diagnostic</span>
+              <span>Full Analytics Report</span>
               <ChevronRight size={14} />
             </button>
           </div>
         </div>
 
-        {/* Right Col: Goal Focus & Modern Architectural Badge Card */}
-        <div className="space-y-6 flex flex-col justify-between">
-          {/* Target Progress Card */}
-          <div className="bg-white rounded-3xl p-6 border border-[#EAE3DC] shadow-[0_4px_24px_rgba(0,0,0,0.03)] flex flex-col justify-between">
-            <div className="flex items-center justify-between text-xs text-[#64748B] mb-2 font-medium">
-              <span>Daily Target Completion</span>
-              <button 
-                onClick={() => setActiveTab('daily-exam')}
-                className="w-7 h-7 rounded-full bg-[#F8F5F2] hover:bg-[#F1EAE5] flex items-center justify-center text-[#111418]"
-              >
-                <ArrowUpRight size={14} />
-              </button>
-            </div>
-
-            <div className="my-2">
-              <div className="text-4xl font-extrabold text-[#111418]">
-                {Math.round((todayActivity.completedCount / todayActivity.targetCount) * 100)}%
-              </div>
-              <p className="text-xs text-[#64748B] mt-1">
-                {todayActivity.completedCount} of {todayActivity.targetCount} MCQs finished today
-              </p>
-            </div>
-
-            {/* Custom Multi-Segment Progress Bar */}
-            <div className="mt-4">
-              <div className="w-full h-3 rounded-full bg-[#F1EAE5] overflow-hidden flex">
-                <div 
-                  className="h-full bg-gradient-to-r from-[#FD6960] to-[#8054F2] rounded-full transition-all duration-500"
-                  style={{ width: `${Math.min(100, (todayActivity.completedCount / todayActivity.targetCount) * 100)}%` }}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Revision Callout */}
-          <div className="bg-white rounded-3xl p-6 border border-[#EAE3DC] shadow-[0_4px_24px_rgba(0,0,0,0.03)] flex flex-col justify-between">
-            <div className="flex items-center justify-between text-xs text-[#64748B] mb-2 font-medium">
-              <span>Spaced Revision Queue</span>
-              <button 
-                onClick={() => setActiveTab('revision-center')}
-                className="w-7 h-7 rounded-full bg-[#F8F5F2] hover:bg-[#F1EAE5] flex items-center justify-center text-[#111418]"
-              >
-                <ArrowUpRight size={14} />
-              </button>
-            </div>
-
-            <div className="my-2">
-              <div className="text-4xl font-extrabold text-[#111418]">
-                {dueRevisionsCount} <span className="text-sm font-normal text-[#64748B]">Due Today</span>
-              </div>
-              <p className="text-xs text-[#64748B] mt-1">
-                {mistakes.length} mistakes saved in smart notebook
-              </p>
-            </div>
-
-            <button
-              onClick={() => setActiveTab('revision-center')}
-              className="mt-3 w-full py-2.5 rounded-full bg-[#F8F5F2] hover:bg-[#F1EAE5] text-[#111418] text-xs font-bold transition-all flex items-center justify-center space-x-1.5"
-            >
-              <RotateCcw size={13} />
-              <span>Review Missed Questions</span>
-            </button>
-          </div>
-        </div>
-
-      </div>
-
-      {/* Bento Grid: 4 Core Subjects Preparedness Cards (Clean Light aesthetic) */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {[
-          { name: 'Bangla', quota: '15 Q', key: 'Bangla' as const, color: '#FD6960' },
-          { name: 'Mathematics', quota: '10 Q', key: 'Mathematics' as const, color: '#4A4DE6' },
-          { name: 'General Knowledge', quota: '10 Q', key: 'General Knowledge' as const, color: '#10B981' },
-          { name: 'English', quota: '10 Q', key: 'English' as const, color: '#F59E0B' },
-        ].map((sub) => {
-          const stat = subjectStats[sub.key];
-          const acc = stat.total > 0 ? Math.round((stat.correct / stat.total) * 100) : 0;
-
-          return (
-            <div 
-              key={sub.name}
-              className="bg-white rounded-3xl p-5 border border-[#EAE3DC] shadow-[0_2px_12px_rgba(0,0,0,0.02)] flex flex-col justify-between"
-            >
-              <div className="flex items-center justify-between text-xs font-medium text-[#64748B] mb-2">
-                <span className="font-bold text-[#111418]">{sub.name}</span>
-                <span className="bg-[#F8F5F2] px-2 py-0.5 rounded-full text-[10px] font-bold">{sub.quota}</span>
-              </div>
-
-              <div className="my-2">
-                <div className="text-3xl font-extrabold text-[#111418]">{acc}%</div>
-                <div className="text-[11px] text-[#64748B] mt-0.5">
-                  {stat.correct}/{stat.total} Correct
-                </div>
-              </div>
-
-              <div className="w-full h-1.5 rounded-full bg-[#F1EAE5] mt-2 overflow-hidden">
-                <div 
-                  className="h-full rounded-full transition-all"
-                  style={{ width: `${acc}%`, backgroundColor: sub.color }}
-                />
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Provenance and Integrity Banner */}
-      <div className="bg-white rounded-2xl p-4 border border-[#EAE3DC] flex items-center justify-between text-xs text-[#64748B] shadow-xs">
-        <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 rounded-full bg-[#10B981]/15 text-[#10B981] flex items-center justify-center font-bold">
-            <CheckCircle2 size={16} />
-          </div>
+        {/* Right Col: 4 Core Subjects Preparedness Radar */}
+        <div className="premium-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between">
           <div>
-            <span className="font-bold text-[#111418]">Authentic Provenance: </span>
-            Verified BCS, Primary Teacher, and Bank questions are prioritized. AI practice questions are strictly tagged.
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-base font-extrabold text-[#0F172A] flex items-center space-x-1.5">
+                <Target size={16} className="text-[#059669]" />
+                <span>Subject Mastery</span>
+              </h2>
+              <span className="text-xs text-[#64748B] font-bold">Standard Quotas</span>
+            </div>
+
+            <div className="space-y-4">
+              {[
+                { name: 'Bangla', quota: '15 Qs', key: 'Bangla' as const, color: '#059669' },
+                { name: 'Mathematics', quota: '10 Qs', key: 'Mathematics' as const, color: '#0284C7' },
+                { name: 'General Knowledge', quota: '10 Qs', key: 'General Knowledge' as const, color: '#D97706' },
+                { name: 'English', quota: '10 Qs', key: 'English' as const, color: '#7C3AED' },
+              ].map(sub => {
+                const stat = subjectStats[sub.key];
+                const acc = stat.total > 0 ? Math.round((stat.correct / stat.total) * 100) : 0;
+
+                return (
+                  <div key={sub.name} className="bg-[#F8FAF9] p-3 rounded-2xl border border-[#E2E8F0]/80">
+                    <div className="flex items-center justify-between text-xs mb-1.5">
+                      <div className="flex items-center space-x-2">
+                        <span className="font-extrabold text-[#0F172A]">{sub.name}</span>
+                        <span className="text-[10px] text-[#64748B] font-semibold">{sub.quota}</span>
+                      </div>
+                      <span className="font-black text-xs text-[#0F172A]">{acc}%</span>
+                    </div>
+
+                    <div className="w-full h-2 rounded-full bg-[#E2E8F0] overflow-hidden">
+                      <div 
+                        className="h-full rounded-full transition-all duration-500"
+                        style={{ width: `${acc}%`, backgroundColor: sub.color }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
+
+          <button
+            onClick={() => setActiveTab('practice-test')}
+            className="mt-6 w-full py-2.5 rounded-xl bg-[#ECFDF5] hover:bg-[#D1FAE5] text-[#065F46] font-bold text-xs transition-colors flex items-center justify-center space-x-1.5 cursor-pointer border border-[#A7F3D0]"
+          >
+            <span>Custom Subject Drill</span>
+            <ChevronRight size={14} />
+          </button>
         </div>
-        <div className="hidden sm:block text-[11px] font-bold text-[#111418] bg-[#F8F5F2] px-3 py-1 rounded-full">
-          Free Tier • IndexedDB Powered
-        </div>
+
       </div>
+
     </div>
   );
 };
