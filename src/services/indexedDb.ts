@@ -180,3 +180,4 @@ export class IndexedDBStorage {
     await db.clear('syncQueue');
   }
 }
+
